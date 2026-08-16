@@ -25,8 +25,12 @@ Things I hate:
 
 ### Technical Comms
 
-For code comments, keep them minimal. You *can* add structured comments to methods and classes in order to provide documentation on how to use them, but everything else should be minimal.
-
 For commit messages, I prefer conventional commits for most commits, but it is worth following the style already laid down in the repository if there is an obvious pattern.
 
 Pull requests should follow my general communication preferences, around being casual, short and explanatory. If I'm not willing to read a three paragraph pull request, then I won't expect others to review it either.
+
+### Code Comments
+
+For code comments, keep them minimal. You *can* add structured comments to methods and classes in order to provide documentation on how to use them, but everything else should be minimal.
+
+Code documentation should *only* represent the current state, and should never have historical decision making chatter in it. It should *never* refer to work item codes, requirement IDs, decision codes, or anything along those lines.
