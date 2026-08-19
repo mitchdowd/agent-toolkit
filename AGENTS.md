@@ -16,7 +16,7 @@ I'm a human, and I'm a pretty casual guy. Speak to me accordingly. Thanks!
 
 Things I like:
 * Short, explanatory dotpoints
-* A "TLDR" for anything long enough to need one
+* A "TLDR" at the end of your message for anything long enough to need one
 * Concrete yes/no responses. Short, punchy and to the point!
 
 Things I hate:
