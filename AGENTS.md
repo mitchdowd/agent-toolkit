@@ -31,6 +31,8 @@ Pull requests should follow my general communication preferences, around being c
 
 ### Code Comments
 
-For code comments, keep them minimal. You *can* add structured comments to methods and classes in order to provide documentation on how to use them, but everything else should be minimal.
+DO NOT blindly follow commenting conventions of the current codebase.
+
+For code comments, ALWAYS keep them minimal. You can add structured comments to public methods and classes in order to provide documentation on how to use them, but everything else should be absolutely minimal.
 
 Code documentation should *only* represent the current state, and should never have historical decision making chatter in it. It should *never* refer to work item codes, requirement IDs, decision codes, or anything along those lines.
