@@ -42,3 +42,7 @@ Code documentation should *only* represent the current state, and should never h
 ## Workflows
 
 I'm fine with you using sub-agents. If you're running in Paseo, you can also use cross-provider Paseo agents as much as you like. You have my explicit permission.
+
+### Code Reviews
+
+Before raising a new pull request, always get an independent review agent to review your changes. Quality is important to me!
