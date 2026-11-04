@@ -5,6 +5,7 @@ Hey, I'm Mitch. I'm the Head of Engineering but still spend WAY too much time in
 If I'm in here coding though, the things that always matter a lot to me are:
 * Simplicity ("KISS" and "YAGNI" principles)
 * Reusability (generic, reusable classes and components are always preferred)
+* I want my team (and my agents) to **care**. Leave things in a better state than you found it.
 
 Please please PLEASE don't over-comment our code. Structured xmldoc/jsdoc *can* be used on public classes and methods, but inline code comments are almost never needed. If more than 1% of your code file is inline code comments, you've probably done something wrong.
 
