@@ -9,7 +9,7 @@ If I'm in here coding though, the things that always matter a lot to me are:
 * Cleaner over smaller. Lead with the clean fix, not the tiny patch. If the client is sending the server something the server already knows, that's the bug.
 * I want my team (and my agents) to **care**. Leave things in a better state than you found it. Keep formatter/linter cleanup near what you're touching, in its own commit. Drift in unrelated areas gets offered as its own PR.
 
-Please please PLEASE don't over-comment our code. Structured xmldoc/jsdoc *can* be used on public classes and methods, but inline code comments are almost never needed. If more than 1% of your code file is inline code comments, you've probably done something wrong.
+Please please PLEASE don't over-comment our code. Structured xmldoc/jsdoc is for public APIs only (see Code Comments), and inline code comments are almost never needed. If more than 1% of your code file is inline code comments, you've probably done something wrong.
 
 ## Communicating
 
@@ -33,7 +33,7 @@ How I work with you:
 * If I agree with or confirm something, that topic is closed. If something you've seen seems to conflict, mention it in one line and let me choose. Don't go investigating.
 * Starting a new task? Say which one and why in one line, then start.
 * If something runs well past what I'd expect, tell me within minutes: what phase it's in and whether it's alive or stuck. Don't wait for me to ask.
-* Ask me before adding, removing or widening any standing rule (in a brief, an instructions file or a memory). A wrong standing rule costs on every single run.
+* Ask me before adding, removing or widening a standing rule you came up with yourself (in a shared brief, an instructions file or a memory). Rules I state can be recorded directly. A wrong standing rule costs on every single run.
 
 ### Technical Comms
 
@@ -51,7 +51,7 @@ The default is no comments at all. Structured docs go on public APIs only, and o
 
 Code documentation should *only* represent the current state, and should never have historical decision making chatter in it. It should *never* refer to work item codes, requirement IDs, decision codes, or anything along those lines.
 
-Before committing, grep the staged diff for added comment lines across every language it touches, and read each match. When briefing sub-agents, spell this out; they copy the density of whatever they read.
+Before committing, and again over the whole branch diff before marking a PR ready, grep for added comment lines across every language it touches, and read each match. When briefing sub-agents, spell this out; they copy the density of whatever they read.
 
 ## Workflows
 
@@ -78,15 +78,15 @@ Before raising a new pull request, always get an independent review agent to rev
 * Push once, when the branch is finished and verified locally. Every push burns CI minutes. Review fixes get committed locally and pushed together.
 * Stage by path, never `git add -A` or `git add .`. Sub-agents leave scratch files around. Check the `git diff --stat` file list matches the task before pushing.
 * Ready means every non-skipped check in `statusCheckRollup` is green. `mergeable` only means there's no conflict.
-* Scale verification to the change. A trivial fix gets a quick check of the actual symptom, minutes not an hour. Save the heavy bar for risky stuff: auth, data, migrations, shared libraries.
+* Scale verification to the change. A trivial fix gets a quick check of the actual symptom, minutes not an hour. Save the heavy bar (multi-viewport measurement, mutation matrices, e2e, repeated runs) for risky stuff: auth, data, migrations, shared libraries.
 * Upgrades cover versions, warnings, vulnerable packages and the practices the new versions recommend. Put the best-practice adoption in its own stacked PR.
 
 ### Stacked PRs
 
 * Stack anything with a merge order, including PRs that touch the same files or append to a shared registry. Squash merges will conflict them otherwise.
-* Base each PR on the branch that merges before it, and link every one with `gh stack link --base <default branch> <bottom> <next> ...`. An unlinked child can get closed rather than retargeted when its base merges.
-* After a squash merge, children still carry the parent's old commits: `git rebase --onto origin/<default branch> <old parent head> <child>`, then `--force-with-lease`.
-* I merge as soon as things go ready, so stacks move under you. `git fetch` and compare local and remote heads before pushing to any stacked branch.
+* Base each PR on the branch that merges before it, and, where `gh stack` is available, link every one with `gh stack link --base <default branch> <bottom> <next> ...`. An unlinked child can get closed rather than retargeted when its base merges.
+* After a squash merge, children still carry the parent's old commits: `git rebase --onto origin/<default branch> <old parent head> <child>`, then `--force-with-lease=<child>:<child's pre-rebase head>`.
+* I merge as soon as things go ready, so stacks move under you. `git fetch` and compare local and remote heads before pushing to any stacked branch. If they diverged, `git reset --hard origin/<branch>` and cherry-pick your new commits; never force-push over my rebase.
 
 ## Testing
 
@@ -103,6 +103,4 @@ Before raising a new pull request, always get an independent review agent to rev
 ### Browser Checks
 
 * Green unit tests don't close a UI bug, because the mocks share your misunderstanding. Open the real page, reproduce the symptom, then watch it clear. If you touched a shared control, check another consumer too.
-* Check geometry, not ARIA or class state. Measure `getBoundingClientRect()` on the trigger and the surface and check for ancestor `overflow` or `transform` clipping. Measure at the extremes: first and last items, narrow viewport, long text.
-* To see a loading state, patch `fetch`/`XMLHttpRequest` to delay API calls a few seconds, then navigate with in-app links (a reload drops the patch).
-* In Paseo, if the browser tools start timing out mid-session, switch to the `agent-browser` CLI. Use `eval --stdin` with a heredoc for JS.
+* For layout changes, check geometry, not ARIA or class state. Measure `getBoundingClientRect()` on the trigger and the surface and check for ancestor `overflow` or `transform` clipping. For risky layout work, measure at the extremes: first and last items, narrow viewport, long text.
