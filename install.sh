@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Installs agent-toolkit into the user profile for Claude Code, Codex, opencode and Antigravity:
+# Installs agent-toolkit into the user profile for whichever of Claude Code, Codex, opencode and
+# Antigravity are present:
 # AGENTS.md as the profile-level instructions, skills/common always, and any other
 # skills/<group> you opt into (running that group's setup.sh, if it has one).
 #
@@ -73,16 +74,34 @@ install_skills() {
   fi
 }
 
+has_tool() {
+  [[ -d "$1" ]] && return 0
+  echo "  skipped     $2 (no $1)"
+  return 1
+}
+
 install_for_home() {
-  local home="$1" label="$2"
+  local home="$1" label="$2" shared=0
+  local opencode="${XDG_CONFIG_HOME:-$home/.config}/opencode"
   echo "$label ($home)"
-  install_to "$home/.claude/CLAUDE.md"
-  install_to "$home/.codex/AGENTS.md"
-  install_to "${XDG_CONFIG_HOME:-$home/.config}/opencode/AGENTS.md"
-  install_to "$home/.gemini/AGENTS.md"
-  install_skills "$home/.claude/skills"
-  install_skills "$home/.agents/skills"
-  install_skills "$home/.gemini/config/skills"
+  if has_tool "$home/.claude" "Claude Code"; then
+    install_to "$home/.claude/CLAUDE.md"
+    install_skills "$home/.claude/skills"
+  fi
+  if has_tool "$home/.codex" "Codex"; then
+    install_to "$home/.codex/AGENTS.md"
+    shared=1
+  fi
+  if has_tool "$opencode" "opencode"; then
+    install_to "$opencode/AGENTS.md"
+    shared=1
+  fi
+  if has_tool "$home/.gemini" "Antigravity"; then
+    install_to "$home/.gemini/AGENTS.md"
+    install_skills "$home/.gemini/config/skills"
+  fi
+  [[ $shared -eq 1 ]] && install_skills "$home/.agents/skills"
+  return 0
 }
 
 SELECTED=(common)
