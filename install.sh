@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs agent-toolkit into the user profile for Claude Code, Codex and opencode:
+# Installs agent-toolkit into the user profile for Claude Code, Codex, opencode and Antigravity:
 # AGENTS.md as the profile-level instructions, skills/common always, and any other
 # skills/<group> you opt into (running that group's setup.sh, if it has one).
 #
@@ -79,8 +79,10 @@ install_for_home() {
   install_to "$home/.claude/CLAUDE.md"
   install_to "$home/.codex/AGENTS.md"
   install_to "${XDG_CONFIG_HOME:-$home/.config}/opencode/AGENTS.md"
+  install_to "$home/.gemini/AGENTS.md"
   install_skills "$home/.claude/skills"
   install_skills "$home/.agents/skills"
+  install_skills "$home/.gemini/config/skills"
 }
 
 SELECTED=(common)
